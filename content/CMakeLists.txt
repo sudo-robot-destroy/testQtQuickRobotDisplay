@@ -12,19 +12,8 @@ qt6_add_qml_module(content
         MainScreen.ui.qml
         LabeledSlider.ui.qml
         App.qml
+
     RESOURCES
-        meshes/root.mesh
-        meshes/hand_hinge.mesh
-        meshes/hand_grab_t_hinge_2.mesh
-        meshes/hand_grab_t_hinge_1.mesh
-        meshes/hand_grab_t.mesh
-        meshes/hand_grab_b_hinge_2.mesh
-        meshes/hand_grab_b_hinge_1.mesh
-        meshes/hand_grab_b.mesh
-        meshes/hand.mesh
-        meshes/forearm.mesh
-        meshes/base.mesh
-        meshes/arm.mesh
         meshes/cube_002.mesh
         meshes/cube_005.mesh
         meshes/cube_006.mesh

@@ -53,18 +53,13 @@ import QtQuick
 import QtQuick3D
 
 Node {
-    opacity: .5
+    opacity: 1 // Useful for troubleshooting the model
     id: rootNode
     property int rotation1
     property int rotation2
     property int rotation3
     property int rotation4
     property int extension
-
-    readonly property alias hand_hinge_position: hand_hinge.scenePosition
-    readonly property alias arm_position: arm.scenePosition
-    readonly property alias forearm_position: forearm.scenePosition
-    readonly property alias root_position: root.scenePosition
 
     PrincipledMaterial {
         id: default_material
@@ -99,82 +94,17 @@ Node {
                 position: Qt.vector3d(-3, 0, 0)
                 source: "meshes/cube_006.mesh"
                 materials: default_material
-                x: extension/100
+                x: extension / 100
             }
         }
-    }
 
-    Model {
-        id: base
-        scale.x: 100
-        scale.y: 100
-        scale.z: 100
-        source: "meshes/base.mesh"
-        eulerRotation.x: -90
-        opacity: 0
-
-        DefaultMaterial {
-            id: steel_material
-            diffuseColor: "#ff595959"
-        }
-
-        DefaultMaterial {
-            id: plastic_material
-        }
-        materials: [steel_material, plastic_material]
-
-        Model {
-            id: root
-            y: -5.96047e-08
-            z: 1.0472
-            eulerRotation.z: rotation4
-            source: "meshes/root.mesh"
-
-            DefaultMaterial {
-                id: plastic_color_material
-                diffuseColor: "#41cd52"
-            }
-            materials: [plastic_material, plastic_color_material, steel_material]
-
-            Model {
-                id: forearm
-                x: 5.32907e-15
-                y: -0.165542
-                z: 1.53472
-                eulerRotation.x: rotation3
-                source: "meshes/forearm.mesh"
-                materials: [plastic_material, steel_material]
-
-                Model {
-                    id: arm
-                    x: -7.43453e-07
-                    y: 0.667101
-                    z: 2.23365
-                    eulerRotation.x: rotation2
-                    source: "meshes/arm.mesh"
-
-                    materials: [plastic_material, steel_material]
-
-                    Model {
-                        id: hand_hinge
-                        x: 7.43453e-07
-                        y: 0.0635689
-                        z: 2.12289
-                        eulerRotation.x: rotation1
-                        source: "meshes/hand_hinge.mesh"
-                        materials: [plastic_material]
-
-                        Model {
-                            id: hand
-                            x: 3.35649e-06
-                            y: 2.38419e-07
-                            z: 0.366503
-                            source: "meshes/hand.mesh"
-                            materials: [plastic_material, steel_material]
-                        }
-                    }
-                }
-            }
+        PointLight {
+            id: frontOvert
+            castsShadow: true
+            ambientColor: Qt.rgba(0.1, 0.1, 0.1, 1.0)
+            position: Qt.vector3d(-2.2, 0, 1.5)
+            brightness: 1
+            visible: true
         }
     }
 }

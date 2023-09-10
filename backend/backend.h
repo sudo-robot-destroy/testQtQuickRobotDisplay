@@ -101,7 +101,4 @@ private:
     AnimatedParam m_extensionDistance;
 
     QProperty<QString> m_status;
-    QProperty<bool> m_isCollision;
-
-    void detectCollision();
 };

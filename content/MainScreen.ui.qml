@@ -145,6 +145,23 @@ Pane {
         extensionDistance: extensionSlider.value
     }
 
+    MouseArea {
+        id: mouseArea
+        property real mouseXprev: 0
+        property real rotationY: 135
+        anchors.fill: parent
+        hoverEnabled: true
+        onDoubleClicked: rotationY=135
+        Connections {
+            target: mouseArea
+            onMouseXChanged: {
+                if (mouseArea.pressed) {
+                    mouseArea.rotationY += (mouseArea.mouseX - mouseArea.mouseXprev) / 5
+                }
+                mouseArea.mouseXprev = mouseArea.mouseX
+            }
+        }
+    }
 
     View3D {
         anchors.fill: parent
@@ -152,55 +169,48 @@ Pane {
         camera: camera
         Node {
             id: scene
-
-            PointLight {
-                x: 760
-                z: 770
-                quadraticFade: 0
-                brightness: 1
-            }
-
-            DirectionalLight {
-                eulerRotation.z: 30
-                eulerRotation.y: -165
-            }
-
-            DirectionalLight {
-                y: 1000
-                brightness: 0.4
-                eulerRotation.z: -180
-                eulerRotation.y: 90
-                eulerRotation.x: -90
-            }
-
             PerspectiveCamera {
                 id: camera
-                x: 5
-                y: 5
-                z: -20
-                pivot.x: 2
-                eulerRotation.y: 150
+                fieldOfView: 60
                 clipNear: 1
-//                lookAtNode: rootNode
+                z: 10
+                y: 10
+                lookAtNode: scene
             }
-            RoboticArm {
-                id: roboArm
-                rotation1: backend.rotation1Angle
-                rotation2: backend.rotation2Angle
-                rotation3: backend.rotation3Angle
-                rotation4: backend.rotation4Angle
-                extension: backend.extensionDistance
+
+            Node {
+                id: dummyNode
+                eulerRotation.y: mouseArea.rotationY
+                PointLight {
+                    x: 760
+                    z: 770
+                    quadraticFade: 0
+                    brightness: 1
+                }
+
+                DirectionalLight {
+                    eulerRotation.z: 30
+                    eulerRotation.y: -165
+                }
+
+                DirectionalLight {
+                    y: 1000
+                    brightness: 0.4
+                    eulerRotation.z: -180
+                    eulerRotation.y: 90
+                    eulerRotation.x: -90
+                }
+
+                RoboticArm {
+                    id: roboArm
+                    rotation1: backend.rotation1Angle
+                    rotation2: backend.rotation2Angle
+                    rotation3: backend.rotation3Angle
+                    rotation4: backend.rotation4Angle
+                    extension: backend.extensionDistance
+                }
             }
         }
-
-//        OrbitCameraController {
-//            anchors.fill: parent
-//            mouseEnabled: true
-//            panEnabled: false
-//            origin: scene
-//            camera: camera
-//        }
-
         environment: sceneEnvironment
 
         SceneEnvironment {
