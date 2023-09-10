@@ -62,7 +62,7 @@ class Backend : public QObject
     Q_PROPERTY(int rotation2Angle READ rotation2Angle WRITE setRotation2Angle NOTIFY rotation2AngleChanged)
     Q_PROPERTY(int rotation3Angle READ rotation3Angle WRITE setRotation3Angle NOTIFY rotation3AngleChanged)
     Q_PROPERTY(int rotation4Angle READ rotation4Angle WRITE setRotation4Angle NOTIFY rotation4AngleChanged)
-    Q_PROPERTY(int clawsAngle READ clawsAngle WRITE setClawsAngle NOTIFY clawsAngleChanged)
+    Q_PROPERTY(int extensionDistance READ extensionDistance WRITE setExtensionDistance NOTIFY extensionDistanceChanged)
     Q_PROPERTY(QString status READ status BINDABLE bindableStatus)
 
 public:
@@ -80,8 +80,8 @@ public:
     int rotation4Angle() const;
     void setRotation4Angle(const int angle);
 
-    int clawsAngle() const;
-    void setClawsAngle(const int angle);
+    int extensionDistance() const;
+    void setExtensionDistance(const int angle);
 
     QString status() const;
     QBindable<QString> bindableStatus() const;
@@ -91,14 +91,14 @@ signals:
     void rotation2AngleChanged();
     void rotation3AngleChanged();
     void rotation4AngleChanged();
-    void clawsAngleChanged();
+    void extensionDistanceChanged();
 
 private:
     AnimatedParam m_rotation1Angle;
     AnimatedParam m_rotation2Angle;
     AnimatedParam m_rotation3Angle;
     AnimatedParam m_rotation4Angle;
-    AnimatedParam m_clawsAngle;
+    AnimatedParam m_extensionDistance;
 
     QProperty<QString> m_status;
     QProperty<bool> m_isCollision;

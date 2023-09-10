@@ -25,5 +25,9 @@ qt6_add_qml_module(content
         meshes/forearm.mesh
         meshes/base.mesh
         meshes/arm.mesh
+        meshes/cube_002.mesh
+        meshes/cube_005.mesh
+        meshes/cube_006.mesh
+        meshes/cylinder.mesh
 
 )

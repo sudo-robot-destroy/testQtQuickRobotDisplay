@@ -142,6 +142,7 @@ Pane {
         rotation2Angle: rotation2Slider.value
         rotation3Angle: rotation3Slider.value
         rotation4Angle: rotation4Slider.value
+        extensionDistance: extensionSlider.value
     }
 
 
@@ -174,11 +175,13 @@ Pane {
 
             PerspectiveCamera {
                 id: camera
-                x: 1050
-                y: 375
-                z: -40
-                pivot.x: 200
-                eulerRotation.y: 85
+                x: 5
+                y: 5
+                z: -20
+                pivot.x: 2
+                eulerRotation.y: 150
+                clipNear: 1
+//                lookAtNode: rootNode
             }
             RoboticArm {
                 id: roboArm
@@ -186,7 +189,7 @@ Pane {
                 rotation2: backend.rotation2Angle
                 rotation3: backend.rotation3Angle
                 rotation4: backend.rotation4Angle
-                clawsAngle: backend.clawsAngle
+                extension: backend.extensionDistance
             }
         }
 
@@ -217,9 +220,9 @@ Pane {
             Layout.preferredWidth: root.sliderWidth
             Layout.minimumWidth: 160
             labelText: "Rotation 1"
-            from: -90
-            to: 90
-            value: 60
+            from: -180
+            to: 180
+            value: 0
         }
 
         LabeledSlider {
@@ -227,9 +230,9 @@ Pane {
             Layout.preferredWidth: root.sliderWidth
             Layout.minimumWidth: 160
             labelText: "Rotation 2"
-            from: -135
-            to: 135
-            value: 45
+            from: -180
+            to: 180
+            value: 0
         }
 
         LabeledSlider {
@@ -237,9 +240,9 @@ Pane {
             Layout.preferredWidth: root.sliderWidth
             Layout.minimumWidth: 160
             labelText: "Rotation 3"
-            from: -90
-            to: 90
-            value: 45
+            from: -180
+            to: 180
+            value: 0
         }
 
         LabeledSlider {
@@ -247,8 +250,19 @@ Pane {
             Layout.preferredWidth: root.sliderWidth
             Layout.minimumWidth: 160
             labelText: "Rotation 4"
-            from: -180
-            to: 180
+            from: -25
+            to: 210
+            value: -25
+        }
+
+        LabeledSlider {
+            id: extensionSlider
+            Layout.preferredWidth: root.sliderWidth
+            Layout.minimumWidth: 160
+            labelText: "Extension"
+            from: -300
+            to: -450
+            value: -300
         }
     }
     states: [

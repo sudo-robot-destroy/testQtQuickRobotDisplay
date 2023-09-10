@@ -53,18 +53,56 @@ import QtQuick
 import QtQuick3D
 
 Node {
+    opacity: .5
     id: rootNode
     property int rotation1
     property int rotation2
     property int rotation3
     property int rotation4
-    property int clawsAngle
+    property int extension
 
-    readonly property alias hand_position: hand_grab_t.scenePosition
     readonly property alias hand_hinge_position: hand_hinge.scenePosition
     readonly property alias arm_position: arm.scenePosition
     readonly property alias forearm_position: forearm.scenePosition
     readonly property alias root_position: root.scenePosition
+
+    PrincipledMaterial {
+        id: default_material
+        baseColor: "#FF999999"
+    }
+
+    rotation: Qt.quaternion(0.707107, -0.707107, 0, 0)
+
+    Model {
+        id: compass
+        source: "meshes/cylinder.mesh"
+        materials: default_material
+        eulerRotation.z: rotation1
+    }
+    Model {
+        id: robot_base
+        position: Qt.vector3d(0, 0, 1.5)
+        source: "meshes/cube_002.mesh"
+        materials: default_material
+        eulerRotation.x: rotation2
+        eulerRotation.y: rotation3
+
+        Model {
+            id: tail_link_1
+            position: Qt.vector3d(1.8, 0.8, 1.2)
+            source: "meshes/cube_005.mesh"
+            materials: default_material
+            eulerRotation.y: rotation4
+
+            Model {
+                id: tail_link_2
+                position: Qt.vector3d(-3, 0, 0)
+                source: "meshes/cube_006.mesh"
+                materials: default_material
+                x: extension/100
+            }
+        }
+    }
 
     Model {
         id: base
@@ -73,6 +111,7 @@ Node {
         scale.z: 100
         source: "meshes/base.mesh"
         eulerRotation.x: -90
+        opacity: 0
 
         DefaultMaterial {
             id: steel_material
@@ -132,66 +171,6 @@ Node {
                             z: 0.366503
                             source: "meshes/hand.mesh"
                             materials: [plastic_material, steel_material]
-
-                            Model {
-                                id: hand_grab_t_hinge_2
-                                x: -9.5112e-07
-                                y: 0.323057
-                                z: 0.472305
-                                eulerRotation: hand_grab_t_hinge_1.eulerRotation
-                                source: "meshes/hand_grab_t_hinge_2.mesh"
-                                materials: [steel_material]
-                            }
-
-                            Model {
-                                id: hand_grab_t_hinge_1
-                                x: -9.3061e-07
-                                y: 0.143685
-                                z: 0.728553
-                                eulerRotation.x: clawsAngle * -1
-                                source: "meshes/hand_grab_t_hinge_1.mesh"
-                                materials: [steel_material]
-
-                                Model {
-                                    id: hand_grab_t
-                                    x: -2.42588e-06
-                                    y: -0.0327932
-                                    z: 0.414757
-                                    eulerRotation.x: hand_grab_t_hinge_1.eulerRotation.x * -1
-                                    source: "meshes/hand_grab_t.mesh"
-                                    materials: [plastic_color_material, steel_material]
-                                }
-                            }
-
-                            Model {
-                                id: hand_grab_b_hinge_1
-                                x: -9.38738e-07
-                                y: -0.143685
-                                z: 0.728553
-                                eulerRotation.x: clawsAngle
-                                source: "meshes/hand_grab_b_hinge_1.mesh"
-                                materials: [steel_material]
-
-                                Model {
-                                    id: hand_grab_b
-                                    x: -2.41775e-06
-                                    y: 0.0327224
-                                    z: 0.413965
-                                    eulerRotation.x: hand_grab_b_hinge_1.eulerRotation.x * -1
-                                    source: "meshes/hand_grab_b.mesh"
-                                    materials: [plastic_color_material, steel_material]
-                                }
-                            }
-
-                            Model {
-                                id: hand_grab_b_hinge_2
-                                x: -9.5112e-07
-                                y: -0.323058
-                                z: 0.472305
-                                eulerRotation: hand_grab_b_hinge_1.eulerRotation
-                                source: "meshes/hand_grab_b_hinge_2.mesh"
-                                materials: [steel_material]
-                            }
                         }
                     }
                 }

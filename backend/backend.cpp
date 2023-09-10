@@ -58,7 +58,7 @@ Backend::Backend(QObject *parent) :
     connect(&m_rotation2Angle, &AnimatedParam::valueChanged, this, &Backend::rotation2AngleChanged);
     connect(&m_rotation3Angle, &AnimatedParam::valueChanged, this, &Backend::rotation3AngleChanged);
     connect(&m_rotation4Angle, &AnimatedParam::valueChanged, this, &Backend::rotation4AngleChanged);
-    connect(&m_clawsAngle, &AnimatedParam::valueChanged, this, &Backend::clawsAngleChanged);
+    connect(&m_extensionDistance, &AnimatedParam::valueChanged, this, &Backend::extensionDistanceChanged);
 
     m_status.setBinding([this](){
         return m_isCollision.value() ? QString("Collision!") :
@@ -115,14 +115,14 @@ void Backend::setRotation4Angle(const int angle)
     m_rotation4Angle.setValue(angle);
 }
 
-int Backend::clawsAngle() const
+int Backend::extensionDistance() const
 {
-    return m_clawsAngle.value();
+    return m_extensionDistance.value();
 }
 
-void Backend::setClawsAngle(const int angle)
+void Backend::setExtensionDistance(const int angle)
 {
-    m_clawsAngle.setValue(angle);
+    m_extensionDistance.setValue(angle);
 }
 
 QString Backend::status() const
