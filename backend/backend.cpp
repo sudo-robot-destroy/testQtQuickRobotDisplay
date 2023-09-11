@@ -110,13 +110,3 @@ void Backend::setExtensionDistance(const int angle)
 {
     m_extensionDistance.setValue(angle);
 }
-
-QString Backend::status() const
-{
-    return m_status;
-}
-
-QBindable<QString> Backend::bindableStatus() const
-{
-    return &m_status;
-}

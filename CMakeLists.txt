@@ -8,12 +8,6 @@ set(CMAKE_AUTOMOC ON)
 find_package(Qt6 COMPONENTS Gui Qml Quick)
 qt_add_executable(RobotArmApp src/main.cpp)
 
-qt_add_resources(RobotArmApp "configuration"
-    PREFIX "/"
-    FILES
-        qtquickcontrols2.conf
-)
-
 target_link_libraries(RobotArmApp PRIVATE
     Qt${QT_VERSION_MAJOR}::Core
     Qt${QT_VERSION_MAJOR}::Gui
@@ -21,4 +15,27 @@ target_link_libraries(RobotArmApp PRIVATE
     Qt${QT_VERSION_MAJOR}::Qml
 )
 
-include(${CMAKE_CURRENT_SOURCE_DIR}/qmlmodules)
+qt6_add_qml_module(RobotArmApp
+    URI "Main"
+    VERSION 1.0
+    NO_PLUGIN
+    QML_FILES main.qml
+)
+
+add_subdirectory(content)
+add_subdirectory(backend)
+
+qt_add_library(RobotArm STATIC)
+qt6_add_qml_module(RobotArm
+    URI "RobotArm"
+    VERSION 1.0)
+
+set(QML_IMPORT_PATH
+    ${CMAKE_BINARY_DIR}
+    CACHE STRING "")
+
+target_link_libraries(RobotArmApp PRIVATE
+    contentplugin
+    RobotArmplugin
+    backend
+)

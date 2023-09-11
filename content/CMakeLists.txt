@@ -11,7 +11,7 @@ qt6_add_qml_module(content
         RoboticArm.ui.qml
         MainScreen.ui.qml
         LabeledSlider.ui.qml
-        App.qml
+        #App.qml
 
     RESOURCES
         meshes/cube_002.mesh
