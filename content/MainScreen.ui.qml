@@ -109,7 +109,6 @@ import QtQuick
 **
 ****************************************************************************/
 import QtQuick3D
-import QtQuick3D.Helpers
 import QtQuick.Controls.Material
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -121,8 +120,6 @@ Pane {
     id: root
     Material.theme: Material.Light
 
-    readonly property bool mobile: Qt.platform.os === "android"
-    readonly property bool horizontal: width > height
     property real sliderWidth: width * 0.15
     property real buttonRowWidth: width * 0.12
     property real buttonMinWidth: 65
@@ -134,7 +131,6 @@ Pane {
 
     width: 800
     height: 600
-    state: "mobileHorizontal"
 
     Backend {
         id: backend
@@ -151,7 +147,7 @@ Pane {
         property real rotationY: 135
         anchors.fill: parent
         hoverEnabled: true
-        onDoubleClicked: rotationY=135
+        onDoubleClicked: rotationY = 135
         Connections {
             target: mouseArea
             onMouseXChanged: {
@@ -275,90 +271,6 @@ Pane {
             value: -300
         }
     }
-    states: [
-        State {
-            name: "mobileHorizontal"
-            when: root.mobile && root.horizontal
-
-            PropertyChanges {
-                target: root
-                leftPadding: 45
-                topPadding: 15
-                bottomPadding: 0
-                sliderWidth: width * 0.4
-                buttonRowWidth: width * 0.2
-                buttonMinWidth: 75
-            }
-
-            PropertyChanges {
-                target: roboArm
-                z: -200
-            }
-        },
-        State {
-            name: "desktopVertical"
-            when: !root.mobile && !root.horizontal
-
-            PropertyChanges {
-                target: root
-                sliderWidth: width * 0.4
-                buttonRowWidth: width * 0.2
-                bottomPadding: 20
-            }
-            AnchorChanges {
-                target: slidersColumn
-                anchors.right: parent.right
-            }
-            PropertyChanges {
-                target: slidersColumn
-                anchors.rightMargin: 20
-            }
-
-            PropertyChanges {
-                target: roboArm
-                scale.x: 0.7
-                scale.y: 0.7
-                scale.z: 0.7
-                y: 250
-                z: 150
-            }
-        },
-        State {
-            name: "mobileVertical"
-            when: root.mobile && !root.horizontal
-
-            PropertyChanges {
-                target: root
-                sliderWidth: width * 0.85
-                topPadding: 15
-                leftPadding: 45
-                bottomPadding: 0
-                buttonRowWidth: width * 0.2
-                buttonMinWidth: 75
-            }
-
-            AnchorChanges {
-                target: slidersColumn
-                anchors.left: undefined
-                anchors.horizontalCenter: parent.horizontalCenter
-            }
-
-            AnchorChanges {
-                target: buttonsRow
-                anchors.bottom: slidersColumn.top
-                anchors.left: slidersColumn.left
-            }
-
-            PropertyChanges {
-                target: roboArm
-                scale.x: 0.7
-                scale.y: 0.7
-                scale.z: 0.7
-                y: 280
-                z: 100
-            }
-        }
-    ]
 
     transitions: Transition {
         PropertyAnimation {
