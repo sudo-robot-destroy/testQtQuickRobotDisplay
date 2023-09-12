@@ -1,4 +1,3 @@
-
 /****************************************************************************
 **
 ** Copyright (C) 2022 The Qt Company Ltd.
@@ -49,30 +48,29 @@
 **
 ****************************************************************************/
 
+#pragma once
 
-/*
-This is a UI file (.ui.qml) that is intended to be edited in Qt Design Studio only.
-It is supposed to be strictly declarative and only uses a subset of QML. If you edit
-this file manually, you might introduce QML code that is not supported by Qt Design Studio.
-Check out https://doc.qt.io/qtcreator/creator-quick-ui-forms.html for details on .ui.qml files.
-*/
-import QtQuick
-import QtQuick.Controls
+#include <QVariantAnimation>
+//#include <QProperty>
+#include <QQmlProperty>
 
-Slider {
-    property string labelText: qsTr("Text")
-    stepSize: 1
+class AnimatedParam : public QVariantAnimation
+{
+    Q_OBJECT
+    Q_PROPERTY(int value READ value WRITE setValue NOTIFY valueChanged)
 
-    Label {
-        text: parent.labelText
-        anchors.left: parent.left
-        anchors.bottom: parent.top
-        bottomPadding: -12
-    }
-    Label {
-        text: parent.value
-        anchors.right: parent.right
-        anchors.bottom: parent.top
-        bottomPadding: -12
-    }
-}
+public:
+    AnimatedParam(QObject *parent = nullptr);
+
+    int value() const;
+    void setValue(int newValue);
+
+    bool isRunning() const;
+
+signals:
+    void valueChanged();
+
+private:
+//    QProperty<bool> m_isRunning;
+    bool m_isRunning;
+};

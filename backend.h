@@ -51,7 +51,8 @@
 #pragma once
 
 #include <QObject>
-#include <qqmlregistration.h>
+//#include <qqmlregistration.h>
+#include <qqml.h>
 #include "animatedparam.h"
 
 class Backend : public QObject
@@ -63,7 +64,6 @@ class Backend : public QObject
     Q_PROPERTY(int rotation3Angle READ rotation3Angle WRITE setRotation3Angle NOTIFY rotation3AngleChanged)
     Q_PROPERTY(int rotation4Angle READ rotation4Angle WRITE setRotation4Angle NOTIFY rotation4AngleChanged)
     Q_PROPERTY(int extensionDistance READ extensionDistance WRITE setExtensionDistance NOTIFY extensionDistanceChanged)
-    Q_PROPERTY(QString status READ status BINDABLE bindableStatus)
 
 public:
     explicit Backend(QObject *parent = nullptr);
@@ -83,9 +83,6 @@ public:
     int extensionDistance() const;
     void setExtensionDistance(const int angle);
 
-    QString status() const;
-    QBindable<QString> bindableStatus() const;
-
 signals:
     void rotation1AngleChanged();
     void rotation2AngleChanged();
@@ -99,6 +96,4 @@ private:
     AnimatedParam m_rotation3Angle;
     AnimatedParam m_rotation4Angle;
     AnimatedParam m_extensionDistance;
-
-    QProperty<QString> m_status;
 };
