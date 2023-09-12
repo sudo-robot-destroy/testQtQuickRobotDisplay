@@ -1,23 +1,18 @@
-/* This file is generated and only relevant for integrating the project into a Qt 6 and cmake based
-C++ project. */
-
-import QtQuick
-import content
-
-import RobotArm
+import QtQuick 2.15
+import QtQuick.Window 2.15
 
 Window {
-    width: 1280
+    width: 1200
     height: 720
-
-    minimumWidth: 800
-    minimumHeight: 600
-
     visible: true
-    title: "RobotArm"
-
-    MainScreen {
+    title: qsTr("Robot Model")
+    Loader {
+        id: mainscreen
+        source: "MainScreen.qml"
         anchors.fill: parent
     }
-}
 
+//    MainScreen {
+//        anchors.fill: parent
+//    }
+}

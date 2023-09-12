@@ -1,3 +1,4 @@
+
 /****************************************************************************
 **
 ** Copyright (C) 2022 The Qt Company Ltd.
@@ -48,51 +49,29 @@
 **
 ****************************************************************************/
 
-#pragma once
 
-#include <QObject>
-#include <qqmlregistration.h>
-#include "animatedparam.h"
+/*
+This is a UI file (.ui.qml) that is intended to be edited in Qt Design Studio only.
+It is supposed to be strictly declarative and only uses a subset of QML. If you edit
+this file manually, you might introduce QML code that is not supported by Qt Design Studio.
+Check out https://doc.qt.io/qtcreator/creator-quick-ui-forms.html for details on .ui.qml files.
+*/
+import QtQuick 2.15
+import QtQuick.Controls 2.15
 
-class Backend : public QObject
-{
-    Q_OBJECT
-    QML_ELEMENT
-    Q_PROPERTY(int rotation1Angle READ rotation1Angle WRITE setRotation1Angle NOTIFY rotation1AngleChanged)
-    Q_PROPERTY(int rotation2Angle READ rotation2Angle WRITE setRotation2Angle NOTIFY rotation2AngleChanged)
-    Q_PROPERTY(int rotation3Angle READ rotation3Angle WRITE setRotation3Angle NOTIFY rotation3AngleChanged)
-    Q_PROPERTY(int rotation4Angle READ rotation4Angle WRITE setRotation4Angle NOTIFY rotation4AngleChanged)
-    Q_PROPERTY(int extensionDistance READ extensionDistance WRITE setExtensionDistance NOTIFY extensionDistanceChanged)
-
-public:
-    explicit Backend(QObject *parent = nullptr);
-
-    int rotation1Angle() const;
-    void setRotation1Angle(const int angle);
-
-    int rotation2Angle() const;
-    void setRotation2Angle(const int angle);
-
-    int rotation3Angle() const;
-    void setRotation3Angle(const int angle);
-
-    int rotation4Angle() const;
-    void setRotation4Angle(const int angle);
-
-    int extensionDistance() const;
-    void setExtensionDistance(const int angle);
-
-signals:
-    void rotation1AngleChanged();
-    void rotation2AngleChanged();
-    void rotation3AngleChanged();
-    void rotation4AngleChanged();
-    void extensionDistanceChanged();
-
-private:
-    AnimatedParam m_rotation1Angle;
-    AnimatedParam m_rotation2Angle;
-    AnimatedParam m_rotation3Angle;
-    AnimatedParam m_rotation4Angle;
-    AnimatedParam m_extensionDistance;
-};
+Slider {
+    property string labelText: qsTr("Text")
+    stepSize: 1
+    Label {
+        text: parent.labelText
+        anchors.left: parent.left
+        anchors.bottom: parent.top
+        bottomPadding: -12
+    }
+    Label {
+        text: parent.value
+        anchors.right: parent.right
+        anchors.bottom: parent.top
+        bottomPadding: -12
+    }
+}

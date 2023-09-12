@@ -49,14 +49,7 @@
 **
 ****************************************************************************/
 
-
-/*
-This is a UI file (.ui.qml) that is intended to be edited in Qt Design Studio only.
-It is supposed to be strictly declarative and only uses a subset of QML. If you edit
-this file manually, you might introduce QML code that is not supported by Qt Design Studio.
-Check out https://doc.qt.io/qtcreator/creator-quick-ui-forms.html for details on .ui.qml files.
-*/
-import QtQuick
+import QtQuick 2.15
 
 
 /****************************************************************************
@@ -108,14 +101,14 @@ import QtQuick
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick3D
-import QtQuick.Controls.Material
-import QtQuick.Controls
-import QtQuick.Layouts
-import RobotArm
-import backend
-import QtQml
+import QtQuick3D 1.15
+import QtQuick.Controls.Material 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
+import backend 1.0
+import QtQml 2.15
 
+// This is a beast of a file but it was easier to make one large one rather than messing with all the qt creator import mess
 Pane {
     id: root
     Material.theme: Material.Light
@@ -132,13 +125,9 @@ Pane {
     width: 800
     height: 600
 
+
     Backend {
         id: backend
-        rotation1Angle: rotation1Slider.value
-        rotation2Angle: rotation2Slider.value
-        rotation3Angle: rotation3Slider.value
-        rotation4Angle: rotation4Slider.value
-        extensionDistance: extensionSlider.value
     }
 
     MouseArea {
@@ -169,44 +158,73 @@ Pane {
                 id: camera
                 fieldOfView: 60
                 clipNear: 1
-                z: 10
-                y: 10
-                lookAtNode: scene
+                position: Qt.vector3d(0,10,10)
+                eulerRotation.x: -45
             }
 
             Node {
                 id: dummyNode
                 eulerRotation.y: mouseArea.rotationY
+
                 PointLight {
-                    x: 760
-                    z: 770
-                    quadraticFade: 0
-                    brightness: 1
+                    x: 10
+                    z: 10
+                    y: 10
+                    brightness: 200
+                }
+                PointLight {
+                    x: -10
+                    z: -15
+                    y: 10
+                    brightness: 50
+                }
+                PointLight {
+                    x: -20
+                    z: 20
+                    y: -10
+                    brightness: 150
                 }
 
-                DirectionalLight {
-                    eulerRotation.z: 30
-                    eulerRotation.y: -165
-                }
+                // The robot model:
+                Node {
+                    opacity: 1 // Useful for troubleshooting the model
+                    id: rootNode
+                    rotation: Qt.quaternion(0.707107, -0.707107, 0, 0) //in blender Z is up
 
-                DirectionalLight {
-                    y: 1000
-                    brightness: 0.4
-                    eulerRotation.z: -180
-                    eulerRotation.y: 90
-                    eulerRotation.x: -90
-                }
+                    Model {
+                        id: compass
+                        source: "meshes/cylinder.mesh"
+                        materials: [ DefaultMaterial {diffuseColor: "green"}]
+                        eulerRotation.z: backend.rotation1Angle
+                    }
+                    Model {
+                        id: robot_base
+                        position: Qt.vector3d(0, 0, 1.5)
+                        source: "meshes/cube.mesh"
+                        materials: [ DefaultMaterial {diffuseColor: "red"}]
+                        eulerRotation.x: backend.rotation2Angle
+                        eulerRotation.y: backend.rotation3Angle
 
-                RoboticArm {
-                    id: roboArm
-                    rotation1: backend.rotation1Angle
-                    rotation2: backend.rotation2Angle
-                    rotation3: backend.rotation3Angle
-                    rotation4: backend.rotation4Angle
-                    extension: backend.extensionDistance
+                        Model {
+                            id: tail_link_1
+                            position: Qt.vector3d(1.8, 0.8, 1.2)
+                            source: "meshes/cube_003.mesh"
+                            materials: [ DefaultMaterial {diffuseColor: "blue"}]
+                            eulerRotation.y: backend.rotation4Angle
+
+                            Model {
+                                id: tail_link_2
+                                position: Qt.vector3d(-3, 0, 0)
+                                source: "meshes/cube_004.mesh"
+                                materials: [ DefaultMaterial {diffuseColor: "orange"}]
+                                x: backend.extensionDistance / 100
+                            }
+                        }
+                    }
                 }
-            }
-        }
+                }//dummyNode
+            }//scene
+
         environment: sceneEnvironment
 
         SceneEnvironment {
@@ -221,54 +239,94 @@ Pane {
         spacing: 6
         anchors.bottom: parent.bottom
 
-        LabeledSlider {
+        Loader {
+            source: "LabeledSlider.qml"
             id: rotation1Slider
             Layout.preferredWidth: root.sliderWidth
             Layout.minimumWidth: 160
-            labelText: "Rotation 1"
-            from: -180
-            to: 180
-            value: 0
+            onLoaded: {
+                item.value = 0
+                item.from = -180
+                item.to = 180
+                item.labelText = "Rotation 1"
+            }
+        }
+        Binding {
+            target: backend
+            property: "rotation1Angle"
+            value: rotation1Slider.item.value
         }
 
-        LabeledSlider {
+        Loader {
+            source: "LabeledSlider.qml"
             id: rotation2Slider
             Layout.preferredWidth: root.sliderWidth
             Layout.minimumWidth: 160
-            labelText: "Rotation 2"
-            from: -180
-            to: 180
-            value: 0
+            onLoaded: {
+                item.value = 0
+                item.from = -180
+                item.to = 180
+                item.labelText = "Rotation 2"
+            }
+        }
+        Binding {
+            target: backend
+            property: "rotation2Angle"
+            value: rotation2Slider.item.value
         }
 
-        LabeledSlider {
+        Loader {
+            source: "LabeledSlider.qml"
             id: rotation3Slider
             Layout.preferredWidth: root.sliderWidth
             Layout.minimumWidth: 160
-            labelText: "Rotation 3"
-            from: -180
-            to: 180
-            value: 0
+            onLoaded: {
+                item.value = 0
+                item.from = -180
+                item.to = 180
+                item.labelText = "Rotation 3"
+            }
+        }
+        Binding {
+            target: backend
+            property: "rotation3Angle"
+            value: rotation3Slider.item.value
         }
 
-        LabeledSlider {
+        Loader {
+            source: "LabeledSlider.qml"
             id: rotation4Slider
             Layout.preferredWidth: root.sliderWidth
             Layout.minimumWidth: 160
-            labelText: "Rotation 4"
-            from: -25
-            to: 210
-            value: -25
+            onLoaded: {
+                item.value = -25
+                item.from = -25
+                item.to = 210
+                item.labelText = "Rotation 4"
+            }
+        }
+        Binding {
+            target: backend
+            property: "rotation4Angle"
+            value: rotation4Slider.item.value
         }
 
-        LabeledSlider {
+        Loader {
+            source: "LabeledSlider.qml"
             id: extensionSlider
             Layout.preferredWidth: root.sliderWidth
             Layout.minimumWidth: 160
-            labelText: "Extension"
-            from: -300
-            to: -450
-            value: -300
+            onLoaded: {
+                item.value = -300
+                item.from = -450
+                item.to = -300
+                item.labelText = "Tail Extension"
+            }
+        }
+        Binding {
+            target: backend
+            property: "extensionDistance"
+            value: extensionSlider.item.value
         }
     }
 

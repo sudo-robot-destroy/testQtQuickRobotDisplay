@@ -1,5 +1,3 @@
-
-
 /****************************************************************************
 **
 ** Copyright (C) 2022 The Qt Company Ltd.
@@ -49,62 +47,53 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick
-import QtQuick3D
 
-Node {
-    opacity: 1 // Useful for troubleshooting the model
-    id: rootNode
-    property int rotation1
-    property int rotation2
-    property int rotation3
-    property int rotation4
-    property int extension
+#pragma once
 
-    PrincipledMaterial {
-        id: default_material
-        baseColor: "#FF999999"
-    }
+#include <QObject>
+//#include <qqmlregistration.h>
+#include <qqml.h>
+#include "animatedparam.h"
 
-    rotation: Qt.quaternion(0.707107, -0.707107, 0, 0)
+class Backend : public QObject
+{
+    Q_OBJECT
+    QML_ELEMENT
+    Q_PROPERTY(int rotation1Angle READ rotation1Angle WRITE setRotation1Angle NOTIFY rotation1AngleChanged)
+    Q_PROPERTY(int rotation2Angle READ rotation2Angle WRITE setRotation2Angle NOTIFY rotation2AngleChanged)
+    Q_PROPERTY(int rotation3Angle READ rotation3Angle WRITE setRotation3Angle NOTIFY rotation3AngleChanged)
+    Q_PROPERTY(int rotation4Angle READ rotation4Angle WRITE setRotation4Angle NOTIFY rotation4AngleChanged)
+    Q_PROPERTY(int extensionDistance READ extensionDistance WRITE setExtensionDistance NOTIFY extensionDistanceChanged)
 
-    Model {
-        id: compass
-        source: "meshes/cylinder.mesh"
-        materials: default_material
-        eulerRotation.z: rotation1
-    }
-    Model {
-        id: robot_base
-        position: Qt.vector3d(0, 0, 1.5)
-        source: "meshes/cube_002.mesh"
-        materials: default_material
-        eulerRotation.x: rotation2
-        eulerRotation.y: rotation3
+public:
+    explicit Backend(QObject *parent = nullptr);
 
-        Model {
-            id: tail_link_1
-            position: Qt.vector3d(1.8, 0.8, 1.2)
-            source: "meshes/cube_005.mesh"
-            materials: default_material
-            eulerRotation.y: rotation4
+    int rotation1Angle() const;
+    void setRotation1Angle(const int angle);
 
-            Model {
-                id: tail_link_2
-                position: Qt.vector3d(-3, 0, 0)
-                source: "meshes/cube_006.mesh"
-                materials: default_material
-                x: extension / 100
-            }
-        }
+    int rotation2Angle() const;
+    void setRotation2Angle(const int angle);
 
-        PointLight {
-            id: frontOvert
-            castsShadow: true
-            ambientColor: Qt.rgba(0.1, 0.1, 0.1, 1.0)
-            position: Qt.vector3d(-2.2, 0, 1.5)
-            brightness: 1
-            visible: true
-        }
-    }
-}
+    int rotation3Angle() const;
+    void setRotation3Angle(const int angle);
+
+    int rotation4Angle() const;
+    void setRotation4Angle(const int angle);
+
+    int extensionDistance() const;
+    void setExtensionDistance(const int angle);
+
+signals:
+    void rotation1AngleChanged();
+    void rotation2AngleChanged();
+    void rotation3AngleChanged();
+    void rotation4AngleChanged();
+    void extensionDistanceChanged();
+
+private:
+    AnimatedParam m_rotation1Angle;
+    AnimatedParam m_rotation2Angle;
+    AnimatedParam m_rotation3Angle;
+    AnimatedParam m_rotation4Angle;
+    AnimatedParam m_extensionDistance;
+};
