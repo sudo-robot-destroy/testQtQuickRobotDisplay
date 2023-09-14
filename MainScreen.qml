@@ -105,7 +105,6 @@ import QtQuick3D 1.15
 import QtQuick.Controls.Material 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
-import backend 1.0
 import QtQml 2.15
 
 // This is a beast of a file but it was easier to make one large one rather than messing with all the qt creator import mess
@@ -124,11 +123,6 @@ Pane {
 
     width: 800
     height: 600
-
-
-    Backend {
-        id: backend
-    }
 
     MouseArea {
         id: mouseArea
@@ -195,35 +189,46 @@ Pane {
                         id: compass
                         source: "meshes/cylinder.mesh"
                         materials: [ DefaultMaterial {diffuseColor: "green"}]
-                        eulerRotation.z: backend.rotation1Angle
+                        eulerRotation.z: rotation1Slider.item.value
+                        Behavior on eulerRotation.z { PropertyAnimation{easing.type: Easing.InOutQuad} }
                     }
+
                     Model {
                         id: robot_base
                         position: Qt.vector3d(0, 0, 1.5)
                         source: "meshes/cube.mesh"
                         materials: [ DefaultMaterial {diffuseColor: "red"}]
-                        eulerRotation.x: backend.rotation2Angle
-                        eulerRotation.y: backend.rotation3Angle
+                        eulerRotation.x: rotation2Slider.item.value
+                        eulerRotation.y: rotation3Slider.item.value
+                        Behavior on eulerRotation.x { PropertyAnimation{easing.type: Easing.InOutQuad} }
+                        Behavior on eulerRotation.y { PropertyAnimation{easing.type: Easing.InOutQuad} }
 
                         Model {
                             id: tail_link_1
                             position: Qt.vector3d(1.8, 0.8, 1.2)
                             source: "meshes/cube_003.mesh"
                             materials: [ DefaultMaterial {diffuseColor: "blue"}]
-                            eulerRotation.y: backend.rotation4Angle
+                            eulerRotation.y: rotation4Slider.item.value
+                            Behavior on eulerRotation.y { PropertyAnimation{easing.type: Easing.InOutQuad} }
 
                             Model {
                                 id: tail_link_2
                                 position: Qt.vector3d(-3, 0, 0)
                                 source: "meshes/cube_004.mesh"
                                 materials: [ DefaultMaterial {diffuseColor: "orange"}]
-                                x: backend.extensionDistance / 100
+                                x: extensionSlider.item.value / 100
+                                Behavior on x {
+                                    PropertyAnimation{
+                                        easing.type: Easing.InOutQuad
+                                        duration: 3000
+                                    }
+                                }
                             }
-                        }
-                    }
-                }
-                }//dummyNode
-            }//scene
+                        }//tail_link_1
+                    }//robot_base
+                }//robot model root_node
+            }//dummyNode
+         }//scene
 
         environment: sceneEnvironment
 
@@ -251,11 +256,6 @@ Pane {
                 item.labelText = "Rotation 1"
             }
         }
-        Binding {
-            target: backend
-            property: "rotation1Angle"
-            value: rotation1Slider.item.value
-        }
 
         Loader {
             source: "LabeledSlider.qml"
@@ -268,11 +268,6 @@ Pane {
                 item.to = 180
                 item.labelText = "Rotation 2"
             }
-        }
-        Binding {
-            target: backend
-            property: "rotation2Angle"
-            value: rotation2Slider.item.value
         }
 
         Loader {
@@ -287,11 +282,6 @@ Pane {
                 item.labelText = "Rotation 3"
             }
         }
-        Binding {
-            target: backend
-            property: "rotation3Angle"
-            value: rotation3Slider.item.value
-        }
 
         Loader {
             source: "LabeledSlider.qml"
@@ -304,11 +294,6 @@ Pane {
                 item.to = 210
                 item.labelText = "Rotation 4"
             }
-        }
-        Binding {
-            target: backend
-            property: "rotation4Angle"
-            value: rotation4Slider.item.value
         }
 
         Loader {
@@ -323,17 +308,5 @@ Pane {
                 item.labelText = "Tail Extension"
             }
         }
-        Binding {
-            target: backend
-            property: "extensionDistance"
-            value: extensionSlider.item.value
-        }
-    }
-
-    transitions: Transition {
-        PropertyAnimation {
-            properties: "sliderWidth, scale.x, scale.y, scale.z, y, z"
-        }
-        AnchorAnimation {}
     }
 }
