@@ -5,15 +5,13 @@ QT += quick
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        #animatedparam.cpp \
-        #backend.cpp \
         main.cpp
 
 RESOURCES += qml.qrc \
     meshes/cylinder.mesh \
     meshes/cube.mesh \
     meshes/cube_003.mesh \
-    meshes/cube_004.mesh
+    meshes/tail_link_2.mesh
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -26,10 +24,3 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-#HEADERS += \
-#    animatedparam.h \
-#    backend.h
-
-#CONFIG += qmltypes
-#QML_IMPORT_NAME = backend
-#QML_IMPORT_MAJOR_VERSION = 1

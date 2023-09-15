@@ -107,6 +107,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import QtQml 2.15
 
+
 // This is a beast of a file but it was easier to make one large one rather than messing with all the qt creator import mess
 Pane {
     id: root
@@ -214,8 +215,20 @@ Pane {
                             Model {
                                 id: tail_link_2
                                 position: Qt.vector3d(-3, 0, 0)
-                                source: "meshes/cube_004.mesh"
-                                materials: [ DefaultMaterial {diffuseColor: "orange"}]
+                                source: "meshes/tail_link_2.mesh"
+                                DefaultMaterial {
+                                    id: black_3dprint_material
+                                    diffuseColor: "#ff050505"
+                                }
+
+                                DefaultMaterial {
+                                    id: aluminum_material
+                                    diffuseColor: "#ff383236"
+                                }
+                                materials: [
+                                    black_3dprint_material,
+                                    aluminum_material
+                                ]
                                 x: extensionSlider.item.value / 100
                                 Behavior on x {
                                     PropertyAnimation{
